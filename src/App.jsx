@@ -1,49 +1,16 @@
-import './App.css';
-import ContactForm from './components/ContactForm/ContactForm';
-import ContactsList from './components/ContactList/ContactList';
-import "modern-normalize";
-import SearchBox from './components/SearchBox/SearchBox';
-import { useState, useEffect } from 'react';
-import inicialsContacts from './assets/contacts.json'; 
+import { AppBar } from "./components/AppBar/AppBar";
+import { Layout } from "./components/Layout/Layout";
+import { TaskForm } from "./components/TaskForm/TaskForm";
+import { TaskList } from "./components/TaskList/TaskList";
 
-function App() {
-  const [contacts, setContacts] = useState(() => {
-    const savedContacts = localStorage.getItem('contacts');
-    return savedContacts ? JSON.parse(savedContacts) : inicialsContacts; 
-  });
-
-  const [filter, setFilter] = useState('');
-
-  useEffect(() => {
-    if (contacts && contacts.length > 0) {
-      localStorage.setItem('contacts', JSON.stringify(contacts)); 
-    }
-  }, [contacts]);
-
-  const addContact = (newContact) => {
-    setContacts((prevContacts) => {
-      return [...prevContacts, newContact]; 
-    });
-  };
-
-  const deleteContact = (contactId) => {
-    setContacts((prevContacts) => {
-      return prevContacts.filter((contact) => contact.id !== contactId); 
-    });
-  };
-
-  const visibleContacts = contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
-
+export const App = () => {
   return (
-    <div className='wrapper'>
-      <h1>Phonebook</h1>
-      <ContactForm onAdd={addContact} />
-      <SearchBox value={filter} onFilter={setFilter} />
-      <ContactsList contacts={visibleContacts} onDelete={deleteContact} />
-    </div>
+    <Layout>
+      <AppBar />
+      <TaskForm />
+      <TaskList />
+    </Layout>
   );
-}
+};
 
 export default App;
